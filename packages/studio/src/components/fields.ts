@@ -51,6 +51,7 @@ export const listSpecs: ListSpec[] = [
       { key: 'location', kind: 'localized' },
       { key: 'start', kind: 'month' },
       { key: 'end', kind: 'month' },
+      { key: 'grade', kind: 'localized' },
       { key: 'description', kind: 'textarea', wide: true },
       { key: 'highlights', kind: 'lines', wide: true },
     ],

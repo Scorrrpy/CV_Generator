@@ -48,6 +48,8 @@ export const CareerEntrySchema = v.object({
   start: yearMonth,
   /** Left out while the station is still running. */
   end: v.optional(yearMonth),
+  /** Final grade as written in the certificate ("1,7", "sehr gut", "First-class honours", …). */
+  grade: optionalText,
   description: optionalText,
   highlights: v.optional(localized(v.array(v.string()))),
 });

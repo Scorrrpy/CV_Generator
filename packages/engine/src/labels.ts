@@ -15,6 +15,7 @@ export const labels = {
     contact: 'Kontakt',
     present: 'heute',
     birthDate: 'Geboren am',
+    grade: 'Abschlussnote',
     page: (page: number, total: number) => `Seite ${page} von ${total}`,
   },
   en: {
@@ -30,6 +31,7 @@ export const labels = {
     contact: 'Contact',
     present: 'present',
     birthDate: 'Born',
+    grade: 'Final grade',
     page: (page: number, total: number) => `Page ${page} of ${total}`,
   },
 } satisfies Record<Locale, unknown>;

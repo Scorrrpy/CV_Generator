@@ -28,6 +28,7 @@ export const sampleCv: CvData = {
       location: 'München',
       start: '2021-09',
       end: '2024-06',
+      grade: { de: '1,7', en: '1.7' },
     },
     {
       id: 'developer',

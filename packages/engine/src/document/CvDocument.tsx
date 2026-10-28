@@ -211,6 +211,7 @@ function Timeline({ ctx, title, entries }: { ctx: Context; title: string; entrie
       title={title}
       items={sorted.map((entry, index) => {
         const location = tr(entry.location);
+        const grade = tr(entry.grade);
         const description = tr(entry.description);
         const highlights = filled(tr(entry.highlights) ?? []);
         return (
@@ -223,6 +224,11 @@ function Timeline({ ctx, title, entries }: { ctx: Context; title: string; entrie
               <Text style={s.period}>{formatPeriod(entry.start, entry.end, l.intl, l.present)}</Text>
               <Text style={s.stationTitle}>{tr(entry.title)}</Text>
               <Text style={s.muted}>{location ? `${entry.organization} · ${location}` : entry.organization}</Text>
+              {grade && (
+                <Text style={s.muted}>
+                  {l.grade}: <Text style={s.skillName}>{grade}</Text>
+                </Text>
+              )}
               {description && <Text style={{ marginTop: 2 }}>{description}</Text>}
               {highlights.map((highlight) => (
                 <View key={highlight} style={s.highlight}>
