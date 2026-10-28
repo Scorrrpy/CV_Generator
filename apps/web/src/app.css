@@ -1,0 +1,75 @@
+:root {
+  color-scheme: light dark;
+  --page-bg: #eceef2;
+  --page-text: #1f2937;
+  --page-muted: #5b6472;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: #0f1218;
+    --page-text: #e5e7eb;
+    --page-muted: #9ca3af;
+
+    /* The studio reads these; the PDF preview itself stays white like paper. */
+    --cv-studio-bg: #161a22;
+    --cv-studio-surface: #1d222c;
+    --cv-studio-border: #2e3542;
+    --cv-studio-text: #e5e7eb;
+    --cv-studio-muted: #9ca3af;
+    --cv-studio-accent: #f59e0b;
+    --cv-studio-accent-contrast: #111111;
+    --cv-studio-danger: #f87171;
+    --cv-studio-focus: #60a5fa;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--page-text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.app {
+  width: min(100% - 2rem, 1440px);
+  margin-inline: auto;
+  padding-block: 1.5rem 3rem;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.header p {
+  margin: 0.25rem 0 0;
+  color: var(--page-muted);
+}
+
+.language {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--page-muted);
+}
+
+.language select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.9375rem;
+}

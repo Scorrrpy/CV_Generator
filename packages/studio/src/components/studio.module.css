@@ -1,0 +1,451 @@
+/*
+ * Every colour, radius and font goes through a --cv-studio-* custom property, so a host page
+ * can restyle the studio by setting those properties on the element or one of its parents.
+ */
+.studio {
+  --_bg: var(--cv-studio-bg, #f6f7f9);
+  --_surface: var(--cv-studio-surface, #ffffff);
+  --_border: var(--cv-studio-border, #d9dde3);
+  --_text: var(--cv-studio-text, #1f2937);
+  --_muted: var(--cv-studio-muted, #5b6472);
+  --_accent: var(--cv-studio-accent, #1f2a44);
+  --_accent-contrast: var(--cv-studio-accent-contrast, #ffffff);
+  --_danger: var(--cv-studio-danger, #b42318);
+  --_focus: var(--cv-studio-focus, #2563eb);
+  --_radius: var(--cv-studio-radius, 10px);
+  --_font: var(--cv-studio-font, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: calc(var(--_radius) * 1.5);
+  background: var(--_bg);
+  color: var(--_text);
+  font-family: var(--_font);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.studio *,
+.studio *::before,
+.studio *::after {
+  box-sizing: border-box;
+}
+
+.studio :focus-visible {
+  outline: 2px solid var(--_focus);
+  outline-offset: 2px;
+}
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.toolbarGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbarLabel {
+  font-size: 0.8125rem;
+  color: var(--_muted);
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--_border);
+  border-radius: var(--_radius);
+  overflow: hidden;
+}
+
+.segmented button {
+  padding: 0.35rem 0.7rem;
+  border: 0;
+  background: var(--_surface);
+  color: var(--_text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--_accent);
+  color: var(--_accent-contrast);
+}
+
+.button,
+.preset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--_border);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  color: var(--_text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 160ms, background-color 160ms;
+}
+
+.primary {
+  border-color: var(--_accent);
+  background: var(--_accent);
+  color: var(--_accent-contrast);
+}
+
+.linkButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--_accent);
+  font: inherit;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.iconButton {
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid transparent;
+  border-radius: calc(var(--_radius) * 0.7);
+  background: none;
+  color: var(--_muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.iconButton:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .button:hover,
+  .preset:hover,
+  .iconButton:not(:disabled):hover {
+    border-color: var(--_accent);
+  }
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.checkbox input {
+  accent-color: var(--_accent);
+}
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.editor {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--_border);
+}
+
+.tabs button {
+  margin-bottom: -1px;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--_radius) var(--_radius) 0 0;
+  background: none;
+  color: var(--_muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabs button[aria-selected='true'] {
+  border-color: var(--_border);
+  border-bottom-color: var(--_bg);
+  color: var(--_text);
+}
+
+.sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.section {
+  /* A fieldset is never narrower than its content by default, which pushes it under the preview. */
+  min-inline-size: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--_border);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+}
+
+.section legend {
+  padding: 0 0.35rem;
+  font-weight: 700;
+}
+
+/* ── Fields ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.field label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--_muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--_border);
+  border-radius: calc(var(--_radius) * 0.7);
+  background: var(--_bg);
+  color: var(--_text);
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.lang {
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--_accent);
+  color: var(--_accent-contrast);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--_muted);
+}
+
+.photo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.photo img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.photo > div {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+}
+
+/* ── Lists ── */
+.list {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+}
+
+.item {
+  justify-self: stretch;
+  border: 1px solid var(--_border);
+  border-radius: calc(var(--_radius) * 0.8);
+}
+
+.item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0.4rem 0.35rem 0.75rem;
+  cursor: pointer;
+}
+
+.item[open] summary {
+  border-bottom: 1px solid var(--_border);
+}
+
+.item > .grid {
+  padding: 0.75rem;
+}
+
+.itemTitle {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemActions {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* ── Design ── */
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.swatches {
+  display: inline-flex;
+}
+
+.swatches span {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-left: -0.25rem;
+  border: 2px solid var(--_surface);
+  border-radius: 50%;
+}
+
+.swatches span:first-child {
+  margin-left: 0;
+}
+
+.colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.6rem;
+}
+
+.color {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.color input {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--_border);
+  border-radius: calc(var(--_radius) * 0.7);
+  background: none;
+  cursor: pointer;
+}
+
+.warnings,
+.issues,
+.error {
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--_danger);
+  border-radius: 0 calc(var(--_radius) * 0.7) calc(var(--_radius) * 0.7) 0;
+  background: var(--_surface);
+  color: var(--_danger);
+  font-size: 0.8125rem;
+}
+
+.warnings,
+.issues ul {
+  padding-left: 1.6rem;
+}
+
+.issues p {
+  margin: 0;
+}
+
+/* ── Preview ── */
+.preview {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.previewHeader h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.frame {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 210 / 297;
+  border: 1px solid var(--_border);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  overflow: hidden;
+}
+
+.frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .preset {
+    transition: none;
+  }
+}

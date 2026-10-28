@@ -1,0 +1,39 @@
+# Publishes the engine and the studio to npm when a version tag (v1.2.3) is pushed.
+# Authentication via npm Trusted Publishing (OIDC): no token or secret is needed. Each package must have
+# this repository and workflow file registered as trusted publisher on npmjs.com (see README → Release).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # lets npm verify that the package was built by this workflow
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install --global npm@11
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+      # The engine first: the studio depends on the published engine version.
+      # Packages whose version is already on npm are skipped, so a release may bump just one of them.
+      - name: Publish changed packages
+        run: |
+          for dir in packages/engine packages/studio; do
+            spec=$(node -p "const p = require('./$dir/package.json'); p.name + '@' + p.version")
+            if npm view "$spec" version > /dev/null 2>&1; then
+              echo "$spec is already published – skipped"
+            else
+              npm publish --workspace "$dir"
+            fi
+          done

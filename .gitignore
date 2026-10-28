@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node / Vite
+node_modules
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.sw?
+
+# Local Netlify folder
+.netlify
+dev-dist

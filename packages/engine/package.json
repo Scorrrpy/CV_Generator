@@ -1,0 +1,40 @@
+{
+  "name": "@scorrrpy/cv-engine",
+  "version": "0.1.1",
+  "description": "Data model, validation and PDF rendering for CVs (German / English).",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scorrrpy/CV_Generator.git",
+    "directory": "packages/engine"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.9.0",
+    "valibot": "^1.5.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "react": "^19.3.1"
+  }
+}
