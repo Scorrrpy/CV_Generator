@@ -1,6 +1,6 @@
 {
   "name": "@scorrrpy/cv-studio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React editor for CVs: form, theme editor, live PDF preview, JSON import / export.",
   "type": "module",
   "license": "MIT",

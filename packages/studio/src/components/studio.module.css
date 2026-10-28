@@ -14,6 +14,11 @@
   --_focus: var(--cv-studio-focus, #2563eb);
   --_radius: var(--cv-studio-radius, 10px);
   --_font: var(--cv-studio-font, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+  /* Distance of the sticky preview from the top of the viewport, e.g. below a fixed site header. */
+  --_sticky-top: var(--cv-studio-sticky-top, 1rem);
+
+  /* The layout follows the studio's own width, not the window's: embedded in a page it is often much narrower. */
+  container: cv-studio / inline-size;
 
   display: grid;
   gap: 1rem;
@@ -156,12 +161,6 @@
   align-items: start;
 }
 
-@media (max-width: 960px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 .editor {
   display: grid;
   gap: 1rem;
@@ -289,6 +288,8 @@
 /* ── Lists ── */
 .list {
   display: grid;
+  /* An implicit `auto` column would grow to the longest entry title instead of cutting it off. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
   justify-items: start;
 }
@@ -316,7 +317,10 @@
   padding: 0.75rem;
 }
 
+/* Without min-width: 0 a long title would widen the whole row instead of being cut off. */
 .itemTitle {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   font-weight: 600;
   text-overflow: ellipsis;
@@ -398,7 +402,7 @@
 /* ── Preview ── */
 .preview {
   position: sticky;
-  top: 1rem;
+  top: var(--_sticky-top);
   display: grid;
   gap: 0.5rem;
 }
@@ -419,6 +423,8 @@
   display: grid;
   place-items: center;
   aspect-ratio: 210 / 297;
+  /* While sticky, the whole preview fits into the window (the PDF viewer scales the page down). */
+  max-height: calc(100dvh - var(--_sticky-top) - 3rem);
   border: 1px solid var(--_border);
   border-radius: var(--_radius);
   background: var(--_surface);
@@ -447,5 +453,37 @@
   .button,
   .preset {
     transition: none;
+  }
+}
+
+/* ── Narrow studio (container queries, kept last so they override the rules above) ── */
+@container cv-studio (max-width: 880px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stacked below the editor, the preview scrolls with the page at its full height. */
+  .preview {
+    position: static;
+  }
+
+  .frame {
+    max-height: none;
+  }
+}
+
+@container cv-studio (max-width: 520px) {
+  .section {
+    padding: 0.75rem;
+  }
+
+  .toolbar,
+  .toolbarGroup {
+    width: 100%;
+  }
+
+  .toolbarGroup .button {
+    flex: 1 1 auto;
+    justify-content: center;
   }
 }
