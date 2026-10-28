@@ -58,8 +58,13 @@ Texte sind entweder ein String (gilt für beide Sprachen) oder `{ de, en }`. `re
 Daten und wirft bei Fehlern einen `CvValidationError` mit lesbaren Meldungen (`career.0.start: …`).
 Ohne `theme` gilt `defaultTheme`; Vorlagen liegen in `themePresets`.
 
-Die PDFs nutzen die eingebauten PDF-Standardschriften (Helvetica, Times, Courier). Sie unterstützen
-Umlaute und ß und brauchen keine Schriftdateien, also auch keine zusätzlichen CSP-Freigaben.
+**Schriften:** Text wird in den eingebauten PDF-Standardschriften gesetzt (Helvetica, Times, Courier). Sie
+können nur westeuropäische Zeichen (WinAnsi). Enthält ein CV andere Zeichen – `π`, `√`, `Łukasz`, Griechisch,
+Kyrillisch, Pfeile, Symbole –, lädt die Engine einmalig eine eingebettete Ausweichschrift nach (DejaVu Sans,
+zugeschnitten, ~330 kB gzip als eigener Chunk) und setzt nur diese Zeichen darin; der übrige Text bleibt in der
+gewählten Schrift. Die Schrift ist als `data:`-URL eingebettet: kein Netzwerkzugriff, keine CSP-Freigabe nötig.
+Die Zeichenbereiche stehen in `packages/engine/scripts/subset-fallback-font.mjs`; nach einer Änderung erzeugt
+`npm run fonts --workspace packages/engine` die Schriftdateien neu (Lizenz: `src/fonts/LICENSE-DejaVu.txt`).
 
 ### Studio einbetten
 

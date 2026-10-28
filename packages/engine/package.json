@@ -1,6 +1,6 @@
 {
   "name": "@scorrrpy/cv-engine",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Data model, validation and PDF rendering for CVs (German / English).",
   "type": "module",
   "license": "MIT",
@@ -14,7 +14,8 @@
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "src/fonts/LICENSE-DejaVu.txt"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,7 +26,8 @@
     }
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json"
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "fonts": "node scripts/subset-fallback-font.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
@@ -35,6 +37,8 @@
     "react": "^19.0.0"
   },
   "devDependencies": {
-    "react": "^19.3.1"
+    "dejavu-fonts-ttf": "^2.37.3",
+    "react": "^19.3.1",
+    "subset-font": "^2.9.0"
   }
 }

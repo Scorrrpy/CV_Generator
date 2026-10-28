@@ -6,8 +6,13 @@ export const SIDEBAR_WIDTH = 190;
 const PAGE_X = 36;
 const PAGE_Y = 40;
 
-export function createStyles(theme: CvTheme) {
-  const { colors, font } = theme;
+/**
+ * @param fallbackFont Registered font family for characters the standard fonts lack. react-pdf picks the first
+ *   family in the list that has a glyph, character by character, so regular text keeps the theme's font.
+ */
+export function createStyles(theme: CvTheme, fallbackFont?: string) {
+  const { colors } = theme;
+  const font = fallbackFont ? [theme.font, fallbackFont] : theme.font;
   const sidebar = theme.layout === 'sidebar';
 
   return StyleSheet.create({

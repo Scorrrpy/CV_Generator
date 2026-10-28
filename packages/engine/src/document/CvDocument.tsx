@@ -10,6 +10,8 @@ export interface CvDocumentProps {
   data: CvData;
   theme: CvTheme;
   locale: Locale;
+  /** Registered font family for characters outside the standard fonts – `renderCvPdf` sets it when needed. */
+  fallbackFont?: string;
 }
 
 interface Context {
@@ -27,10 +29,10 @@ const filled = (items: readonly string[]) => items.map((item) => item.trim()).fi
  * The CV as a react-pdf document. Layout `sidebar` puts photo, contact, skills and languages into a coloured
  * column on the first page; layout `classic` is a single column with the contact details in the header.
  */
-export function CvDocument({ data, theme, locale }: CvDocumentProps) {
+export function CvDocument({ data, theme, locale, fallbackFont }: CvDocumentProps) {
   const l = labels[locale];
-  const ctx: Context = { data, theme, l, s: createStyles(theme), tr: (value) => resolveLocalized(value, locale) };
-  const { s } = ctx;
+  const s = createStyles(theme, fallbackFont);
+  const ctx: Context = { data, theme, l, s, tr: (value) => resolveLocalized(value, locale) };
   const sidebar = theme.layout === 'sidebar';
 
   return (
