@@ -92,6 +92,8 @@ const de = {
     rendering: 'Vorschau wird erstellt …',
     invalid: 'Die Vorschau kann nicht erstellt werden. Bitte prüfe:',
     openInTab: 'Vorschau in neuem Tab öffnen',
+    notEmbeddable: 'Dein Gerät kann PDFs nicht direkt in der Seite anzeigen. Die Vorschau öffnet sich im PDF-Viewer.',
+    open: 'Vorschau öffnen',
   },
   errors: {
     open: 'Die Datei konnte nicht geöffnet werden.',
@@ -194,6 +196,8 @@ const en: StudioMessages = {
     rendering: 'Rendering preview …',
     invalid: 'The preview cannot be created. Please check:',
     openInTab: 'Open preview in a new tab',
+    notEmbeddable: 'Your device cannot show PDFs inside the page. The preview opens in your PDF viewer.',
+    open: 'Open preview',
   },
   errors: {
     open: 'The file could not be opened.',
