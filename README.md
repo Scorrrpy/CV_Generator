@@ -1,46 +1,58 @@
 # CV Generator
 
-Lebenslauf im Browser erstellen, gestalten und als PDF exportieren – auf Deutsch oder Englisch.
-Alles läuft lokal: Es gibt keinen Server, und deine Daten verlassen dein Gerät nicht.
+[![CI](https://github.com/Scorrrpy/CV_Generator/actions/workflows/ci.yml/badge.svg)](https://github.com/Scorrrpy/CV_Generator/actions/workflows/ci.yml)
+[![npm: cv-engine](https://img.shields.io/npm/v/@scorrrpy/cv-engine?label=%40scorrrpy%2Fcv-engine)](https://www.npmjs.com/package/@scorrrpy/cv-engine)
+[![npm: cv-studio](https://img.shields.io/npm/v/@scorrrpy/cv-studio?label=%40scorrrpy%2Fcv-studio)](https://www.npmjs.com/package/@scorrrpy/cv-studio)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Für Nutzer
+Write and design a CV in the browser and export it as a PDF, in German or English.
+Everything runs locally: there is no server, and your data never leaves your device.
 
-1. App im Browser öffnen. Eine Installation ist nicht nötig. Optional lässt sie sich über das
-   Browser-Menü („App installieren“) wie ein Programm installieren und funktioniert dann auch offline.
-2. Unter **Inhalt** die eigenen Daten eintragen, unter **Design** Farben, Schrift und Layout wählen.
-   Rechts erscheint die Vorschau.
-3. **PDF herunterladen** erzeugt den Lebenslauf in der oben gewählten Sprache.
+🇩🇪 [Deutsche Version](README.de.md)
 
-**Zweisprachig pflegen:** Ist der Haken gesetzt, bekommt jeder Text eine deutsche und eine englische
-Fassung. Mit dem Umschalter DE / EN wechselst du zwischen beiden; die Felder zeigen an, welche Sprache
-du gerade bearbeitest.
+## Features
 
-**Wo sind meine Daten?** Die App speichert automatisch im Browser (IndexedDB). Das ist bequem, aber
-nicht dauerhaft sicher: Löschst du die Browserdaten, ist auch der Lebenslauf weg. Sichere ihn deshalb
-mit **Speichern** als `.cv.json`-Datei und öffne ihn später mit **Datei öffnen** wieder – auch auf
-einem anderen Gerät.
+- **Private by design:** no backend, no account, no tracking. Data is stored in the browser and in files you save.
+- **Bilingual:** keep every text in German and English and export either language.
+- **Live PDF preview** while you edit, with theme presets, colours, fonts and layout options.
+- **Installable and offline-capable** (PWA).
+- **Reusable building blocks:** the PDF engine and the editor are published as separate npm packages.
 
-## Für Entwickler
+## For users
 
-Node.js 22+, npm-Workspaces:
+1. Open the app in your browser. No installation is required. If you like, install it from the browser
+   menu ("Install app"); it then works offline as well.
+2. Enter your details under **Content**, then choose colours, font and layout under **Design**.
+   The preview appears on the right.
+3. **Download PDF** creates the CV in the language selected at the top.
 
-| Paket | Inhalt |
+**Bilingual editing:** when the checkbox is ticked, every text gets a German and an English version.
+Switch between them with the DE / EN toggle; the fields show which language you are editing.
+
+**Where is my data?** The app saves automatically in the browser (IndexedDB). That is convenient but not
+permanent: clearing your browser data also deletes your CV. Back it up with **Save** as a `.cv.json` file
+and open it again later with **Open file**, on any device.
+
+## For developers
+
+Node.js 22+, npm workspaces:
+
+| Package | Contents |
 | --- | --- |
-| `packages/engine` (`@scorrrpy/cv-engine`) | Datenmodell und Validierung (valibot), PDF-Rendering (react-pdf), Themes, Dateiformat |
-| `packages/studio` (`@scorrrpy/cv-studio`) | React-Editor `<CvStudio>` mit Live-Vorschau, als Bibliothek nutzbar |
-| `apps/web` | Die eigenständige PWA um das Studio, speichert in IndexedDB |
+| `packages/engine` ([`@scorrrpy/cv-engine`](packages/engine)) | Data model and validation (valibot), PDF rendering (react-pdf), themes, file format |
+| `packages/studio` ([`@scorrrpy/cv-studio`](packages/studio)) | React editor `<CvStudio>` with live preview, usable as a library |
+| `apps/web` | The standalone PWA around the studio, stores data in IndexedDB |
 
-| Befehl | Zweck |
+| Command | Purpose |
 | --- | --- |
-| `npm install` | Abhängigkeiten installieren |
-| `npm run dev` | App unter <http://localhost:5173> |
-| `npm run check` | Typecheck, Lint und alle Tests |
-| `npm run build` | Engine, Studio und App bauen |
+| `npm install` | Install dependencies |
+| `npm run dev` | App at <http://localhost:5173> |
+| `npm run check` | Typecheck, lint and all tests |
+| `npm run build` | Build engine, studio and app |
 
-Innerhalb des Repos werden die Pakete direkt aus `src/` verwendet (`aliases.ts`), ein vorheriger Build
-ist nicht nötig.
+Inside the repo the packages are used straight from `src/` (`aliases.ts`), so no prior build is needed.
 
-### Engine verwenden
+### Using the engine
 
 ```ts
 import { renderCvPdf, type CvDataInput } from '@scorrrpy/cv-engine';
@@ -48,54 +60,64 @@ import { renderCvPdf, type CvDataInput } from '@scorrrpy/cv-engine';
 const data: CvDataInput = {
   version: 1,
   person: { name: 'Erika Musterfrau', headline: { de: 'Entwicklerin', en: 'Developer' } },
-  career: [{ id: 'job', kind: 'work', title: 'Entwicklerin', organization: 'Beispiel GmbH', start: '2024-01' }],
+  career: [{ id: 'job', kind: 'work', title: 'Developer', organization: 'Example Ltd', start: '2024-01' }],
 };
 
-const pdf: Blob = await renderCvPdf({ data, locale: 'de' }); // Browser und Node 22+
+const pdf: Blob = await renderCvPdf({ data, locale: 'en' }); // browser and Node 22+
 ```
 
-Texte sind entweder ein String (gilt für beide Sprachen) oder `{ de, en }`. `renderCvPdf` validiert die
-Daten und wirft bei Fehlern einen `CvValidationError` mit lesbaren Meldungen (`career.0.start: …`).
-Ohne `theme` gilt `defaultTheme`; Vorlagen liegen in `themePresets`.
+Texts are either a string (used for both languages) or `{ de, en }`. `renderCvPdf` validates the data and
+throws a `CvValidationError` with readable messages (`career.0.start: …`) if it is invalid.
+Without `theme`, `defaultTheme` applies; presets are in `themePresets`.
 
-**Schriften:** Text wird in den eingebauten PDF-Standardschriften gesetzt (Helvetica, Times, Courier). Sie
-können nur westeuropäische Zeichen (WinAnsi). Enthält ein CV andere Zeichen – `π`, `√`, `Łukasz`, Griechisch,
-Kyrillisch, Pfeile, Symbole –, lädt die Engine einmalig eine eingebettete Ausweichschrift nach (DejaVu Sans,
-zugeschnitten, ~330 kB gzip als eigener Chunk) und setzt nur diese Zeichen darin; der übrige Text bleibt in der
-gewählten Schrift. Die Schrift ist als `data:`-URL eingebettet: kein Netzwerkzugriff, keine CSP-Freigabe nötig.
-Die Zeichenbereiche stehen in `packages/engine/scripts/subset-fallback-font.mjs`; nach einer Änderung erzeugt
-`npm run fonts --workspace packages/engine` die Schriftdateien neu (Lizenz: `src/fonts/LICENSE-DejaVu.txt`).
+**Fonts:** text is set in the built-in PDF standard fonts (Helvetica, Times, Courier). They only cover
+Western European characters (WinAnsi). If a CV contains other characters – `π`, `√`, `Łukasz`, Greek,
+Cyrillic, arrows, symbols – the engine loads an embedded fallback font once (DejaVu Sans, subset, ~330 kB
+gzip as a separate chunk) and sets only those characters in it; all other text keeps the chosen font. The
+font is embedded as a `data:` URL: no network request, no Content Security Policy entry needed.
+The character ranges are defined in `packages/engine/scripts/subset-fallback-font.mjs`; after changing them,
+`npm run fonts --workspace packages/engine` regenerates the font files (licence: `src/fonts/LICENSE-DejaVu.txt`).
 
-### Studio einbetten
+### Embedding the studio
 
 ```tsx
 import { CvStudio, memoryStorage } from '@scorrrpy/cv-studio';
 import '@scorrrpy/cv-studio/style.css';
 
-<CvStudio uiLocale="de" storage={memoryStorage()} />;
+<CvStudio uiLocale="en" storage={memoryStorage()} />;
 ```
 
-Ohne `initialData` startet das Studio mit einem fiktiven Beispiel-Lebenslauf. Farben, Radien und
-Schrift lassen sich über CSS-Variablen (`--cv-studio-accent`, `--cv-studio-surface`, …) anpassen,
-siehe `packages/studio/src/components/studio.module.css`. Die Vorschau lädt das PDF als `blob:`-URL in
-einen `<iframe>`; eine Seite mit CSP braucht dafür `frame-src blob:`.
+Without `initialData` the studio starts with a fictional sample CV. Colours, radii and font can be adjusted
+with CSS custom properties (`--cv-studio-accent`, `--cv-studio-surface`, …), see
+`packages/studio/src/components/studio.module.css`. The preview loads the PDF from a `blob:` URL into an
+`<iframe>`, so a page with a Content Security Policy needs `frame-src blob:`.
 
 ### Release
 
-Version in `packages/engine/package.json` und `packages/studio/package.json` anheben, dann einen Tag
-`vX.Y.Z` pushen. Die GitHub Action `release.yml` prüft, baut und veröffentlicht beide Pakete auf npm.
+Bump the version in `packages/engine/package.json` and `packages/studio/package.json`, then push a tag
+`vX.Y.Z`. The GitHub Action `release.yml` checks, builds and publishes both packages to npm.
 
-Sie meldet sich per **Trusted Publishing** (OIDC) bei npm an, es gibt also keinen Token und kein Secret.
-Einmalige Einrichtung:
+It authenticates with npm via **Trusted Publishing** (OIDC), so there is no token and no secret.
+One-time setup:
 
-1. **Erste Veröffentlichung von Hand**, denn npm lässt Trusted Publishing nur für bestehende Pakete zu:
+1. **Publish the first version by hand**, because npm only allows Trusted Publishing for existing packages:
    ```sh
    npm login
    npm run build
    npm publish --workspace packages/engine
    npm publish --workspace packages/studio
    ```
-2. **Pro Paket** auf npmjs.com unter *Settings → Trusted Publisher → GitHub Actions* eintragen:
-   Organization/User `Scorrrpy`, Repository `CV_Generator`, Workflow `release.yml`, Environment leer.
-3. Optional unter *Settings → Publishing access* „Require two-factor authentication and disallow tokens“
-   wählen. Dann kann nur noch dieser Workflow (oder du mit 2FA) veröffentlichen.
+2. **For each package**, on npmjs.com under *Settings → Trusted Publisher → GitHub Actions*, enter:
+   Organization/User `Scorrrpy`, Repository `CV_Generator`, Workflow `release.yml`, Environment empty.
+3. Optionally, under *Settings → Publishing access*, choose "Require two-factor authentication and
+   disallow tokens". Then only this workflow (or you with 2FA) can publish.
+
+## Contributing
+
+Bug reports, ideas and pull requests are welcome – see [CONTRIBUTING.md](CONTRIBUTING.md).
+For security issues, please follow [SECURITY.md](SECURITY.md) instead of opening a public issue.
+
+## License
+
+[MIT](LICENSE) © David Roßkopf. The bundled DejaVu Sans subset is under its own
+[licence](packages/engine/src/fonts/LICENSE-DejaVu.txt).
